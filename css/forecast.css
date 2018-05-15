@@ -1,0 +1,11 @@
+.container {
+    margin: 10px auto;
+}
+div#forecast {
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+#summary {
+    height: 100px;
+}
