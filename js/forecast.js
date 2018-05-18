@@ -50,7 +50,7 @@ function success(pos) {
                 var time = json.daily.data[dayid].time;
                 var date = new Date();
                 date.setTime(time * 1000);
-                $date.innerHTML = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
+                $date.innerHTML = date.getDate() + '.' + ('0' + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear();
             }
 
             function next() {
