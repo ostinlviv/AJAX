@@ -11,51 +11,50 @@ function success(pos) {
         + crd.latitude + ',' + crd.longitude + '?units=si')
         .then(function (response) {
             return response.json()
-        }).then(function (json) {
-            var $temp = document.querySelector('#temperature');
-            var $weather = document.querySelector('#weather');
-            var $summary = document.querySelector('#summary');
-            var $date = document.querySelector('#date');
-            var $prevBtn = document.querySelector('#prev');
+        }).then(function (data) {
+            var $temp = document.getElementById('temperature');
+            var $weather = document.getElementById('weather');
+            var $summary = document.getElementById('summary');
+            var $date = document.getElementById('date');
+            var $prevBtn = document.getElementById('prev');
 
             function now() {
                 dayid = 0;
                 function skycons() {
                     var skycons = new Skycons({"color": "black"});
-                    skycons.add(document.getElementById("weather"), json.currently.icon);
+                    skycons.add(document.getElementById("weather"), data.currently.icon);
                     skycons.play();
                 }
                 skycons();
-                console.log(json);
-                $temp.innerHTML = json.currently.temperature.toFixed(1) + ' °C';
-                $weather.innerHTML = json.currently.icon;
-                $summary.innerHTML = json.currently.summary;
+                $temp.innerHTML = data.currently.temperature.toFixed(1) + ' °C';
+                $weather.innerHTML = data.currently.icon;
+                $summary.innerHTML = data.currently.summary;
                 $date.innerHTML = 'Now';
                 $prevBtn.style.display = 'none';
             }
             now();
 
             function forecast (){
-                var averageTemp = ((json.daily.data[dayid].temperatureHigh + json.daily.data[dayid].temperatureMin) / 2).toFixed(1);
+                var averageTemp = ((data.daily.data[dayid].temperatureHigh + data.daily.data[dayid].temperatureMin) / 2).toFixed(1);
                 $prevBtn.style.display = 'inline-block';
                 $temp.innerHTML = averageTemp + ' °C';
-                $weather.innerHTML = json.daily.data[dayid].icon;
+                $weather.innerHTML = data.daily.data[dayid].icon;
                 function skycons() {
                     var skycons = new Skycons({"color": "black"});
-                    skycons.add(document.getElementById("weather"), json.daily.data[dayid].icon);
+                    skycons.add(document.getElementById("weather"), data.daily.data[dayid].icon);
                     skycons.play();
                 }
                 skycons();
-                $summary.innerHTML = json.daily.data[dayid].summary;
-                var time = json.daily.data[dayid].time;
+                $summary.innerHTML = data.daily.data[dayid].summary;
+                var time = data.daily.data[dayid].time;
                 var date = new Date();
                 date.setTime(time * 1000);
                 $date.innerHTML = date.getDate() + '.' + ('0' + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear();
             }
 
             function next() {
-                    document.querySelector('#next').addEventListener('click', function () {
-                        if (dayid < json.daily.data.length - 1) {
+                    document.getElementById('next').addEventListener('click', function () {
+                        if (dayid < data.daily.data.length - 1) {
                             dayid += 1;
                         }
                         forecast();
@@ -64,7 +63,7 @@ function success(pos) {
             next();
 
         function previous() {
-            document.querySelector('#prev').addEventListener('click', function () {
+            document.getElementById('prev').addEventListener('click', function () {
 
                 if (dayid > 1) {
                     if (dayid === 8) {
@@ -86,14 +85,11 @@ function success(pos) {
         '&key=AIzaSyB6ra89ldXx9k4fjdPMJwUXiU8r0JiGo4c')
         .then(function (response) {
             return response.json()
-        }).then(function (json) {
-        console.log(json);
-        document.querySelector('#city').innerHTML = json.results[0].address_components[3].long_name;
-
-
-    }).catch(function (ex) {
-        console.log('parsing failed', ex)
-    });
+        }).then(function (data) {
+            document.getElementById('city').innerHTML = data.results[0].address_components[3].long_name;
+        }).catch(function (ex) {
+            console.log('parsing failed', ex)
+        });
 }
 
 function error(err) {
